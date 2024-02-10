@@ -13,7 +13,7 @@ class LibcSearcher(object):
         if func is not None and address is not None:
             self.add_condition(func, address)
         self.libc_database_path = os.path.join(
-            os.path.realpath(os.path.dirname(__file__)), config.libc_database_db_path)
+            os.path.realpath(os.path.dirname(__file__)), config.libcs_path)
         self.db = ""
 
     def add_condition(self, func, address):
