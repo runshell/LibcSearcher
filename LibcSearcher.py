@@ -5,6 +5,11 @@ import os
 import re
 import sys
 
+import config
+
+if config.libcs_path == "path/to/libc-database/db/":
+    print("Please edit the config.py to set the path to your libc-database.")
+    sys.exit(0)
 
 class LibcSearcher(object):
     def __init__(self, func=None, address=None):
@@ -12,7 +17,7 @@ class LibcSearcher(object):
         if func is not None and address is not None:
             self.add_condition(func, address)
         self.libc_database_path = os.path.join(
-            os.path.realpath(os.path.dirname(__file__)), "libc-database/db/")
+            os.path.realpath(os.path.dirname(__file__)), config.libcs_path)
         self.db = ""
 
     def add_condition(self, func, address):
@@ -24,7 +29,7 @@ class LibcSearcher(object):
             sys.exit()
         self.condition[func] = address
 
-    #Wrapper for libc-database's find shell script.
+    # Wrapper for libc-database's find shell script.
     def decided(self):
         if len(self.condition) == 0:
             print("No leaked info provided.")
@@ -34,7 +39,7 @@ class LibcSearcher(object):
         res = []
         for name, address in self.condition.items():
             addr_last12 = address & 0xfff
-            # res.append(re.compile("^%s .*%x" % (name, addr_last12))) #后3位以0开头将丢失第一位，匹配精度下降，将出现大量结果；还可能匹配上地址中间部分，所以改为加%03x$
+            # res.append(re.compile("^%s .*%x" % (name, addr_last12))) # 后3位以0开头将丢失第一位，匹配精度下降，将出现大量结果；还可能匹配上地址中间部分，所以改为加%03x$
             res.append(re.compile("^%s .*%03x$" % (name, addr_last12)))
 
         db = self.libc_database_path
@@ -120,9 +125,3 @@ class LibcSearcher(object):
 
         print("No matched, Make sure you supply a valid function name or just add more libc.")
         return 0
-
-
-if __name__ == "__main__":
-    obj = LibcSearcher("fgets", 0x7ff39014bd90)
-    print("[+]system  offset: ", hex(obj.dump("system")))
-    print("[+]/bin/sh offset: ", hex(obj.dump("str_bin_sh")))
