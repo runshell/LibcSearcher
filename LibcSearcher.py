@@ -5,6 +5,8 @@ import os
 import re
 import sys
 
+import config
+
 
 class LibcSearcher(object):
     def __init__(self, func=None, address=None):
@@ -12,7 +14,7 @@ class LibcSearcher(object):
         if func is not None and address is not None:
             self.add_condition(func, address)
         self.libc_database_path = os.path.join(
-            os.path.realpath(os.path.dirname(__file__)), "libc-database/db/")
+            os.path.realpath(os.path.dirname(__file__)), config.libc_database_db_path)
         self.db = ""
 
     def add_condition(self, func, address):
@@ -24,7 +26,7 @@ class LibcSearcher(object):
             sys.exit()
         self.condition[func] = address
 
-    #Wrapper for libc-database's find shell script.
+    # Wrapper for libc-database's find shell script.
     def decided(self):
         if len(self.condition) == 0:
             print("No leaked info provided.")
@@ -122,7 +124,7 @@ class LibcSearcher(object):
         return 0
 
 
-if __name__ == "__main__":
-    obj = LibcSearcher("fgets", 0x7ff39014bd90)
-    print("[+]system  offset: ", hex(obj.dump("system")))
-    print("[+]/bin/sh offset: ", hex(obj.dump("str_bin_sh")))
+# if __name__ == "__main__":
+#     obj = LibcSearcher("fgets", 0x7ff39014bd90)
+#     print("[+]system  offset: ", hex(obj.dump("system")))
+#     print("[+]/bin/sh offset: ", hex(obj.dump("str_bin_sh")))
