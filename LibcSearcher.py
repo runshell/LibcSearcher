@@ -7,6 +7,10 @@ import sys
 
 import config
 
+if config.libcs_path == "path/to/libc-database/db/":
+    print("Please edit the config.py to set the path to your libc-database.")
+    sys.exit(0)
+
 class LibcSearcher(object):
     def __init__(self, func=None, address=None):
         self.condition = {}
@@ -121,9 +125,3 @@ class LibcSearcher(object):
 
         print("No matched, Make sure you supply a valid function name or just add more libc.")
         return 0
-
-
-# if __name__ == "__main__":
-#     obj = LibcSearcher("fgets", 0x7ff39014bd90)
-#     print("[+]system  offset: ", hex(obj.dump("system")))
-#     print("[+]/bin/sh offset: ", hex(obj.dump("str_bin_sh")))
