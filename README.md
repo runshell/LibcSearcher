@@ -10,17 +10,17 @@
 
 在泄露了目标系统 libc 中的某一个函数地址后，往往需要通过手动对比来判断目标系统使用的 libc 版本，并进一步计算出其它函数的地址；该工具实现了这一麻烦过程的脚本化。
 
-推荐[libc-database](https://github.com/niklasb/libc-database)的数据库。
+推荐 [libc-database](https://github.com/niklasb/libc-database) 的数据库。
 
 ## 安装
 
-```shell
+```bash
 git clone https://github.com/runshell/LibcSearcher.git
 cd LibcSearcher
 python setup.py develop
 ```
 
-在此之后，请修改 LibcSearcher 目录下的 `config.py`，将变量 `libcs_path` 改为你存放各版本 libc 的目录；如果你使用的是[libc-database](https://github.com/niklasb/libc-database)的数据库，应当改为 libc-database 目录下子目录 db 的路径。**注意，路径请以`/`结尾。**
+在此之后，请修改 LibcSearcher 目录下的 `config.py`，将变量 `libcs_path` 改为你存放各版本 libc 的目录；如果你使用的是 [libc-database](https://github.com/niklasb/libc-database)，应当改为 libc-database 目录下子目录 db 的路径。**注意，路径请以`/`结尾。**
 
 ## 示例
 
